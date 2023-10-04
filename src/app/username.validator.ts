@@ -10,13 +10,16 @@ import { UserService } from './user.service';
 export class UsernameValidator {
   static createValidator(userService: UserService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
-      return userService
-        .checkIfUsernameExists(control.value)
-        .pipe(
-          map((result: boolean) =>
-            result ? { usernameAlreadyExists: true } : null
+      return (
+        userService
+          .checkHttp(control.value)
+          //.checkIfUsernameExists(control.value)
+          .pipe(
+            map((result: boolean) =>
+              result ? { usernameAlreadyExists: true } : null
+            )
           )
-        );
+      );
     };
   }
 }

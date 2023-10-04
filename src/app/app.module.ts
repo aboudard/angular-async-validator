@@ -5,17 +5,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  imports:      
-  [
+  imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
+    HttpClientModule,
   ],
-  declarations: [ AppComponent ],
-  bootstrap:    [ AppComponent ]
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
