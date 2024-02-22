@@ -1,39 +1,37 @@
-import { ChangeDetectionStrategy, Component, VERSION } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { UserService } from './user.service';
-import { UsernameValidator } from './username.validator';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject
+} from "@angular/core";
+import { FormBuilder, Validators } from "@angular/forms";
+import { UsernameValidator } from "./username.validator";
+
 
 @Component({
-  selector: 'my-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  selector: "my-app",
+  templateUrl: "./app.component.html",
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  constructor(private fb: UntypedFormBuilder, private userService: UserService) {}
+  private usernameValidator = inject(UsernameValidator);
 
-  registrationForm = this.fb.group({
-    name: [null, [Validators.minLength(3), Validators.required]],
-    username: [
-      null,
-      [Validators.minLength(3), Validators.required],
-      // [],
-    ],
+  registrationForm = inject(FormBuilder).group({
+    name: ['', [Validators.minLength(3), Validators.required]],
+    username: ['', [Validators.minLength(3), Validators.required]],
   });
 
   patch(): void {
-    console.log('patch');
+    console.log("patch");
 
     this.registrationForm
-      .get('username')
-      .setAsyncValidators([
-        UsernameValidator.createValidator(this.userService),
-      ]);
-    this.registrationForm.get('username').updateValueAndValidity();
+      .get("username")
+      .setAsyncValidators([this.usernameValidator.createValidator()]);
+    this.registrationForm.get("username").updateValueAndValidity();
 
     this.registrationForm.patchValue({
-      name: 'Bruce Wayne',
-      username: 'Batman',
+      name: "Bruce Wayne",
+      username: "Batman",
     });
   }
 }

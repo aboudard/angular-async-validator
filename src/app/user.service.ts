@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 
@@ -8,8 +8,7 @@ import { delay, map } from 'rxjs/operators';
 })
 export class UserService {
   private existingUsernames = ['Batman', 'Superman', 'Joker', 'Luthor'];
-
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   checkIfUsernameExists(value: string): Observable<boolean> {
     return of(this.existingUsernames.some((a) => a === value)).pipe(delay(500));

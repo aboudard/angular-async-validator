@@ -1,3 +1,4 @@
+import { Injectable, inject } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -7,11 +8,17 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserService } from './user.service';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class UsernameValidator {
-  static createValidator(userService: UserService): AsyncValidatorFn {
+
+  private userService = inject(UserService);
+
+  createValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
       return (
-        userService
+        this.userService
           .checkHttp(control.value)
           //.checkIfUsernameExists(control.value)
           .pipe(
