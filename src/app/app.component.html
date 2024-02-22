@@ -1,46 +1,38 @@
-<p>
-  Using Custom Async Validators
-</p>
+
 <ng-container *ngIf="registrationForm.statusChanges | async"></ng-container>
-<form class="example-form" [formGroup]="registrationForm">
-  <mat-form-field class="example-full-width">
-    <mat-label>Name</mat-label>
-    <input matInput placeholder="Ex. John Doe" formControlName="name">
-  </mat-form-field>
+<form class="p-3 w-30rem	" [formGroup]="registrationForm">
 
-  <mat-form-field class="example-full-width">
-    <mat-label>Username</mat-label>
-    <input matInput placeholder="Ex. Batman" formControlName="username" />
-    <mat-error
-      *ngIf="registrationForm.get('username').hasError('usernameAlreadyExists')"
-    >
-      Username already <strong>exists</strong>
-    </mat-error>
-  </mat-form-field>
+  <h2>
+    Using Custom Async Validators
+  </h2>
+  <div class="flex mb-2">
+    <span class="p-float-label mr-2">
+      <input id="name" pInputText formControlName="name">
+      <label for="name">Name</label>
+    </span>
 
-  <div class="button-container">
-    <button
-    (click)="registrationForm.reset()"
-    style="margin-right: 1rem"
-    mat-raised-button
-    color="warn">
-    Reset
-  </button>
-  <button
-    (click)="patch()"
-    style="margin-right: 1rem"
-    mat-raised-button
-    color="secondary">
-    Patch
-  </button>
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="!registrationForm.valid">
-    Submit
-  </button>
-</div>
-<div>
-  <pre>{{ registrationForm.status | json }}</pre>
-</div>
+
+    <span class="p-float-label">
+      <input id="username" pInputText formControlName="username">
+      <label for="username">Username</label>
+      <small *ngIf="registrationForm.get('username').hasError('usernameAlreadyExists')" id="username2-help"
+        class="p-error block">Username already <strong>exists</strong></small>
+    </span>
+  </div>
+
+
+  <div class="flex justify-content-end flex-wrap">
+    <button (click)="registrationForm.reset()" pButton pRipple class="p-button-warning mr-2">
+      Reset
+    </button>
+    <button (click)="patch()" pButton pRipple class="p-button-secondary mr-2">
+      Patch
+    </button>
+    <button pButton pRipple [disabled]="!registrationForm.valid">
+      Submit
+    </button>
+  </div>
+  <div>
+    <pre>{{ registrationForm.status | json }}</pre>
+  </div>
 </form>
