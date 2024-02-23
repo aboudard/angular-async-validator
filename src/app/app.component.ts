@@ -36,6 +36,7 @@ export class AppComponent {
   };
 
   validUser(): void {
+    // typed form value as service parameter
     this.store.sendUser(this.registrationForm.getRawValue());
   }
 
@@ -48,6 +49,7 @@ export class AppComponent {
       .setAsyncValidators([this.usernameValidator.createValidator()]);
     this.registrationForm.get("username").updateValueAndValidity(); */
 
+    // typesafe patchValue on the form
     this.registrationForm.patchValue(this.userBatman);
   }
 }
