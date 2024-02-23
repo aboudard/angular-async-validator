@@ -1,6 +1,6 @@
 
 <ng-container *ngIf="registrationForm.statusChanges | async"></ng-container>
-<form class="p-3 w-fit" [formGroup]="registrationForm">
+<form class="p-3 w-fit" [formGroup]="registrationForm" (submit)="validUser()">
 
   <h2>
     Using Custom Async Validators
@@ -22,13 +22,13 @@
 
 
   <div class="flex justify-content-end flex-wrap">
-    <button (click)="registrationForm.reset()" pButton pRipple class="p-button-warning mr-2">
+    <button type="button" (click)="registrationForm.reset()" pButton pRipple class="p-button-warning mr-2">
       Reset
     </button>
-    <button (click)="patch()" pButton pRipple class="p-button-secondary mr-2">
+    <button type="button" (click)="patch()" pButton pRipple class="p-button-secondary mr-2">
       Patch
     </button>
-    <button pButton pRipple [disabled]="!registrationForm.valid">
+    <button type="submit" pButton pRipple [disabled]="!registrationForm.valid">
       Submit
     </button>
   </div>

@@ -1,11 +1,12 @@
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import {
-  ChangeDetectionStrategy,
-  Component,
-  inject
-} from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
+import { Store } from "./store";
+import { User } from "./user";
 import { UsernameValidator } from "./username.validator";
-
 
 @Component({
   selector: "my-app",
@@ -14,24 +15,39 @@ import { UsernameValidator } from "./username.validator";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private usernameValidator = inject(UsernameValidator);
+  private store = inject(Store);
+  //private usernameValidator = inject(UsernameValidator);
 
-  registrationForm = inject(FormBuilder).group({
-    name: ['', [Validators.minLength(3), Validators.required]],
-    username: ['', [Validators.minLength(3), Validators.required]],
+  registrationForm = new FormGroup({
+    name: new FormControl("", {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    username: new FormControl("", {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(3)],
+      asyncValidators: [inject(UsernameValidator).createValidator()],
+    }),
   });
+
+  userBatman: User = {
+    name: "Bruce Wayne",
+    username: "Batman",
+  };
+
+  validUser(): void {
+    this.store.sendUser(this.registrationForm.getRawValue());
+  }
 
   patch(): void {
     console.log("patch");
 
-    this.registrationForm
+    // in case of dynamic add async validators
+    /* this.registrationForm
       .get("username")
       .setAsyncValidators([this.usernameValidator.createValidator()]);
-    this.registrationForm.get("username").updateValueAndValidity();
+    this.registrationForm.get("username").updateValueAndValidity(); */
 
-    this.registrationForm.patchValue({
-      name: "Bruce Wayne",
-      username: "Batman",
-    });
+    this.registrationForm.patchValue(this.userBatman);
   }
 }
