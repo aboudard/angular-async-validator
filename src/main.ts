@@ -1,16 +1,44 @@
-import './polyfills';
+import "./polyfills";
 
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {
+  ENVIRONMENT_INITIALIZER,
+  importProvidersFrom,
+  inject
+} from "@angular/core";
 
-import { AppModule } from './app/app.module';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
+import { bootstrapApplication } from "@angular/platform-browser";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { PrimeNGConfig } from "primeng/api";
+import { RippleModule } from "primeng/ripple";
+import { AppComponent } from "./app/app.component";
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
-  // Ensure Angular destroys itself on hot reloads.
-  if (window['ngRef']) {
-    window['ngRef'].destroy();
-  }
-  window['ngRef'] = ref;
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      RippleModule
+    ),
+    provideAnimations(),
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: ENVIRONMENT_INITIALIZER,
+      multi: true,
+      useValue: () => {
+        inject(PrimeNGConfig).ripple = true;
+      },
+    },
+  ],
+})
+  .then((ref) => {
+    // Ensure Angular destroys itself on hot reloads.
+    if (window["ngRef"]) {
+      window["ngRef"].destroy();
+    }
+    window["ngRef"] = ref;
 
-  // Otherwise, log the boot error
-}).catch(err => console.error(err));
+    // Otherwise, log the boot error
+  })
+  .catch((err) => console.error(err));

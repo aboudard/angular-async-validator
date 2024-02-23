@@ -1,18 +1,29 @@
+import { AsyncPipe, JsonPipe, NgIf } from "@angular/common";
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import {
-  FormControl,
-  FormGroup,
-  Validators
-} from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
+import { RippleModule } from "primeng/ripple";
 import { Store } from "./store";
 import { User } from "./user";
 import { UsernameValidator } from "./username.validator";
 
 @Component({
-  selector: "my-app",
-  templateUrl: "./app.component.html",
-  styleUrls: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: "my-app",
+    templateUrl: "./app.component.html",
+    styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        ButtonModule,
+        RippleModule,
+        AsyncPipe,
+        JsonPipe,
+    ],
 })
 export class AppComponent {
   private store = inject(Store);
